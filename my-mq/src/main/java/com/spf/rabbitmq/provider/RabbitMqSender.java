@@ -2,11 +2,15 @@ package com.spf.rabbitmq.provider;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spf.dto.MessageHello;
+import com.spf.rabbitmq.conf.RabbitConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.jms.Topic;
 
 /*
  * created by shipengfei
@@ -29,7 +33,14 @@ public class RabbitMqSender {
         }catch (Exception e){
             e.printStackTrace();
         }
-        rabbitTemplate.convertAndSend("hello-rabbitmq", message);
+
+        // 默认direct模式，单播
+        //rabbitTemplate.convertAndSend(RabbitConfig.MY_DIRECT_QUEUE, message);
+        rabbitTemplate.convertAndSend(RabbitConfig.MY_DIRECT_EXCHANGE,RabbitConfig.MY_DIRECT_QUEUE, message);
+
+        // topic模式，多播
+        rabbitTemplate.convertAndSend(RabbitConfig.MY_TOPIC_EXCHANGE, RabbitConfig.MY_TOPIC_QUEUE, message);
+
         logger.warn("rabbitmq send message = " + message);
     }
 }
