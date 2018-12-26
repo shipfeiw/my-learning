@@ -14,6 +14,7 @@ public class RabbitConfig {
 
     @Bean
     public Queue helloQueue(){
-        return new Queue("hello-rabbitmq");
+        return new Queue("hello-rabbitmq", true);
     }
+
 }

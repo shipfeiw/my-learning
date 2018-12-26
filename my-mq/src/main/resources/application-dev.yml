@@ -4,6 +4,16 @@ spring:
     port: 5672
     username: guest
     password: guest
+    #通过实现 ConfirmCallback 接口，消息发送到 Broker 后触发回调，确认消息是否到达 Broker 服务器，
+    #也就是只确认是否正确到达 Exchange 中  (默认)
+    publisher-confirms: false
+    #通过实现 ReturnCallback 接口，启动消息失败返回，比如路由不到队列时触发回调  (默认)
+    publisher-returns: false
+    #[important] 消息通过 ACK 确认是否被正确接收，每个 Message 都要被确认（acknowledged），
+    #可以手动去 ACK 或自动 ACK  (默认)
+    listener:
+      direct:
+        acknowledge-mode: auto
   kafka:
     bootstrap-servers: localhost:9092 # 指定kafka地址，可以多个
     producer:
